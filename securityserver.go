@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/DrWrong/finalProject_securityserver/handler"
+	"github.com/DrWrong/finalProject_securityserver/thrift_interface"
+	"github.com/DrWrong/finalProject_securityserver/utils"
 	log "github.com/Sirupsen/logrus"
 	"os"
 	"os/signal"
-	"securityserver/handler"
-	"securityserver/thrift_interface"
-	"securityserver/utils"
 	"syscall"
 	"time"
 )

@@ -2,10 +2,10 @@ package handler
 
 import (
 	"errors"
+	"github.com/DrWrong/finalProject_securityserver/models"
+	"github.com/DrWrong/finalProject_securityserver/thrift_interface"
+	"github.com/DrWrong/finalProject_securityserver/utils"
 	log "github.com/Sirupsen/logrus"
-	"securityserver/models"
-	"securityserver/thrift_interface"
-	"securityserver/utils"
 )
 
 type SecurityServerImpl struct {
