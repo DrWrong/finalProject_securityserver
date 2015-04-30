@@ -8,6 +8,9 @@ import (
 	"runtime"
 )
 
+// the entrance of the server
+// firstly it initialize the system's configure
+// secondly it start the server.
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	pwd, _ := os.Getwd()

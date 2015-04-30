@@ -13,28 +13,35 @@ import (
 	"time"
 )
 
+//  a security server class
+//  it contains two attributes
+//  + ExeDir the execute directory of the server
+//  + server the thrift server
 type SecurityServer struct {
 	ExeDir string
 	server *thrift.TSimpleServer
 }
 
+//  create a new thrift server and have it initialized
 func NewSecurityServer(exeDir string) (Securityserver *SecurityServer) {
 	Securityserver = &SecurityServer{ExeDir: exeDir}
 	Securityserver.init()
 	return Securityserver
 }
 
+// initialize the server and register a signal handler to handle terminate signal
 func (self *SecurityServer) init() {
 	self.registerSignalHandler()
 	log.Info("security server has been inited")
 }
 
+//  when received the terminated signal stop the server
 func (s *SecurityServer) registerSignalHandler() {
 	go func() {
 		for {
 			c := make(chan os.Signal)
 			signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
-			//sig is blocked as c is 没缓冲
+			//sig is blocked as c is no buffer
 			sig := <-c
 			log.Infof("Signal %d received", sig)
 			s.stop()
@@ -43,6 +50,8 @@ func (s *SecurityServer) registerSignalHandler() {
 		}
 	}()
 }
+
+// run the server
 func (s *SecurityServer) run() {
 	transportFactory := thrift.NewTFramedTransportFactory(thrift.NewTTransportFactory())
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
@@ -62,6 +71,7 @@ func (s *SecurityServer) run() {
 	}
 }
 
+// stop the server
 func (s *SecurityServer) stop() {
 	log.Info("security server is about to stop...")
 	s.server.Stop()

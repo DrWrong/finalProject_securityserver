@@ -12,10 +12,12 @@ import (
 	"io"
 )
 
+// Cipher Class it contains a cipher block attribute.
 type Cipher struct {
 	Block cipher.Block
 }
 
+// Create a new cipher instance
 func NewCipher(key string) (*Cipher, error) {
 	data := []byte(key)
 	// md5.Size = 32
@@ -27,6 +29,8 @@ func NewCipher(key string) (*Cipher, error) {
 	return &Cipher{Block}, nil
 }
 
+// the encrypt function
+//  it is a realization of AES encrypt algorithm
 func (c *Cipher) Encrypt(plainText string) (string, error) {
 	text := []byte(plainText)
 	b := base64.StdEncoding.EncodeToString(text)
@@ -43,6 +47,8 @@ func (c *Cipher) Encrypt(plainText string) (string, error) {
 	return encodetext, nil
 }
 
+// the decrypt function
+//  it is  a realization of AES decrypt algorithm
 func (c *Cipher) Decrypt(cipherText string) (string, error) {
 	var data []byte
 	text, err := base64.URLEncoding.DecodeString(cipherText)

@@ -8,11 +8,16 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
+//  a security server implementation to implement the pre-defined interface
+//  it contains two attributes
+// + Cipher the encrypt and decrypt model
+// + key the pre-defined decrypt key.
 type SecurityServerImpl struct {
 	Cipher *models.Cipher
 	Key    string
 }
 
+//  create a new  security server implementation instance
 func NewSecurityServerImpl() *SecurityServerImpl {
 	key := utils.IniConf.String("key")
 	cipher, err := models.NewCipher(key)
@@ -22,6 +27,7 @@ func NewSecurityServerImpl() *SecurityServerImpl {
 	return &SecurityServerImpl{cipher, key}
 }
 
+//  a commonly log
 func (h *SecurityServerImpl) log(commonRequest *thrift_interface.CommonRequest) {
 	log.WithFields(log.Fields{
 		"requester": commonRequest.Requester,
@@ -29,6 +35,7 @@ func (h *SecurityServerImpl) log(commonRequest *thrift_interface.CommonRequest) 
 	}).Info("processing request")
 }
 
+// when process ping request, it just return true, with error = nil
 func (h *SecurityServerImpl) Ping(
 	commonRequest *thrift_interface.CommonRequest) (
 	bool, error) {
@@ -36,6 +43,7 @@ func (h *SecurityServerImpl) Ping(
 	return true, nil
 }
 
+//  process encrypt it just invoke the Cipher instance's Encrypt method
 func (h *SecurityServerImpl) Encrypted(
 	commonRequest *thrift_interface.CommonRequest,
 	plainText string) (string, error) {
@@ -44,6 +52,8 @@ func (h *SecurityServerImpl) Encrypted(
 
 }
 
+//  decrypt process, it firstly compare the key with pre-configured
+// keys if they are the same then decrypt
 func (h *SecurityServerImpl) Decrypted(
 	commonRequest *thrift_interface.CommonRequest,
 	cipherText string,
